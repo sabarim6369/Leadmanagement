@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter } from "react-router-dom"; 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Sidebar from './utils/sidebar';
-import Profile from './components/admin/Profile/Profile';
+import AdminProfile from './components/admin/Profile/index';
 import Dashboard from './components/admin/Dashboard/Dashboard';
 import Report from './components/admin/Report/Report';
 import TelecallersDashboard from './components/telecaller/Dashboard/Dashboard';
@@ -56,7 +56,7 @@ const App = () => {
         />
         <Route 
           path="/profile" 
-          element={<ProtectedRoute element={<Profile />} allowedRoles={["admin"]} />} 
+          element={<ProtectedRoute element={<AdminProfile />} allowedRoles={["admin"]} />} 
         />
         <Route 
           path="/report" 

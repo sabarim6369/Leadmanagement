@@ -22,6 +22,7 @@ console.log(req.body)
         if (!admin) {
             return res.status(401).json({ message: "Admin not found." });
         }
+        console.log(admin.telecallers.length)
 
         const isMatch = await bcrypt.compare(password, admin.password);
         if (!isMatch) {
@@ -34,12 +35,56 @@ console.log(req.body)
 
         const token = jwt.sign({ adminId: admin._id, databaseName ,role:"admin"}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.status(200).json({ message: "Login successful", token });
+        res.status(200).json({ message: "Login successful", token,admindetails:admin});
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error logging in", error: err });
     }
-};
+    };
+    const getadmindetails = async (req, res) => {
+        try {
+            const Telecaller = req.db.model("Telecaller");
+            const Lead = req.db.model("Lead");
+    
+            const telecallers = await Telecaller.find().populate("leads", "status");
+    
+            const leadCount = await Lead.countDocuments();
+    
+            const telecallerStats = telecallers.map(tc => {
+                const fulfilledLeadsCount = tc.leads.filter(lead => lead.status === "fulfilled").length;
+                return {
+                    telecaller: tc,
+                    fulfilledLeadsCount
+                };
+            });
+    
+            telecallerStats.sort((a, b) => b.fulfilledLeadsCount - a.fulfilledLeadsCount);
+    
+            const topTelecallers = telecallerStats.slice(0, 3).map((tc) => ({
+              _id: tc.telecaller._id,
+              username: tc.telecaller.username,
+              fulfilledLeadsCount: tc.fulfilledLeadsCount,
+              status: tc.telecaller.status,
+              pending: tc.telecaller.pending,
+              address: tc.telecaller.address,
+              email: tc.telecaller.email,
+              leads: tc.telecaller.leads.length,
+            }));
+    console.log(topTelecallers)
+            res.status(200).json({
+              message: "Successfully fetched",
+              leadCount,
+              telecallers, 
+              topTelecallers, 
+              success: true,
+            });
+    
+        } catch (error) {
+            console.error("Error fetching telecallers:", error);
+            res.status(500).json({ message: "Server error", success: false });
+        }
+    };
+    
 const getalltelecaller = async (req, res) => {
     try {
         const Telecaller = req.db.model("Telecaller");
@@ -461,5 +506,6 @@ module.exports = {
     login,
     getalltelecaller,
     getallleads,
-    assignallleads
+    assignallleads,
+    getadmindetails
 };

@@ -120,14 +120,14 @@ const Sidebar = () => {
                             <i className={`fas fa-chart-line fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===3?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===3?'font-bold text-black':'text-white'}`}>Report</h2>
                         </div>
-                        <div onClick={()=>setselect(4)} className={`flex items-center cursor-pointer ${select===4?'bg-mint-green p-3 rounded':'text-white'}`}>
+                        {/* <div onClick={()=>setselect(4)} className={`flex items-center cursor-pointer ${select===4?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-comments fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===4?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===4?'font-bold text-black':'text-white'}`}>Messages</h2>
-                        </div>
-                        <div onClick={()=>setselect(5)} className={`flex items-center cursor-pointer ${select===5?'bg-mint-green p-3 rounded':'text-white'}`}>
+                        </div> */}
+                        {/* <div onClick={()=>setselect(5)} className={`flex items-center cursor-pointer ${select===5?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-cogs fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===5?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===5?'font-bold text-black':'text-white'}`}>Settings</h2>
-                        </div>
+                        </div> */}
                         <div onClick={()=>setselect(6)} className={`flex items-center cursor-pointer ${select===6?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-history fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===6?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===6?'font-bold text-black':'text-white'}`}>History</h2>

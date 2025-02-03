@@ -60,10 +60,12 @@ export default function LoginPage({ setUserRole }) {
       console.log(response);
 
       if (response.status === 200) {
+        console.log(response.data.admindetails)
         console.log(response.data.token);
         toast.success("Login successful!");
         localStorage.setItem("token", response.data.token);
-      setUserRole(role)
+        localStorage.setItem("admindetails", JSON.stringify(response.data.admindetails));
+        setUserRole(role)
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
