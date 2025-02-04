@@ -21,5 +21,4 @@ const authenticationschema=new mongoose.Schema({
         enum:["active","inactive","paused"]
     }
 })
-const authentication=mongoose.model("Superadmin",authenticationschema)
-module.exports=authentication
+module.exports=authenticationschema

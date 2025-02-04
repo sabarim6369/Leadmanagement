@@ -39,6 +39,7 @@ console.log(databaseName)
         const Lead = connection.model('Lead', leadSchema);
     } else {
         const Admin = connection.model('Admin', adminSchema);
+        const superadmin=connection.model("Superadmin",superadminSchema)
     }
 
     connectionCache[databaseName] = connection;

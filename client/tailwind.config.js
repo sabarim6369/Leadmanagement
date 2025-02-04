@@ -10,6 +10,9 @@ module.exports = {
         'custom-gray': 'rgba(23, 24, 33, 1)',
             },
     }, 
+    animation: {
+      'spin-slow': 'spin 3s linear infinite',
+    },
   },
   plugins: [    require('tailwind-scrollbar'),
   ],

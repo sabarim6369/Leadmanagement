@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const Admin = require('../schema/Adminschema'); 
+const jwt = require('jsonwebtoken');
 
 const addadmin = async (req, res) => {
     try {
@@ -39,7 +40,57 @@ const addadmin = async (req, res) => {
         res.status(500).json({ message: "Error adding admin", error: err });
     }
 };
+const addsuperadmin = async (req, res) => {
+    try {
+        console.log(req.body);
+        const { email, password, username} = req.body;
 
+        if (!email || !password || !username) {
+            return res.status(400).json({ message: "Please provide all required fields." });
+        }
+
+        const Superadmin = req.db.model('Superadmin');
+        const existingsuperadminAdmin = await Superadmin.findOne({ email });
+        if (existingsuperadminAdmin) {
+            return res.status(400).json({ message: "Superadmin with this email already exists." });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+
+        const newAdmin = new Superadmin({
+            email,
+            password: hashedPassword,
+            username,
+            status: "active",
+        });
+
+        await newAdmin.save();
+
+        res.status(201).json({ message: "Superadmin added successfully", data: newAdmin });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Error adding admin", error: err });
+    }
+};
+
+const superadminlogin=async(req,res)=>{
+    const {email,password}=req.body;
+    console.log(req.body)
+    const Superadmin = req.db.model('Superadmin');
+    const superadmin= await Superadmin.findOne({email});
+    if (!superadmin) {
+        return res.status(401).json({ message: "Admin not found." });
+    }
+     const isMatch = await bcrypt.compare(password, superadmin.password);
+            if (!isMatch) {
+                return res.status(400).json({ message: "Invalid credentials." });
+            }
+    const token = jwt.sign({ adminId: superadmin._id, databaseName:"superadmin" ,role:"superadmin"}, process.env.JWT_SECRET, { expiresIn: '1h' });
+      
+    res.status(200).json({ message: "Login successful", token,admindetails:superadmin});
+
+}
 
 const updateadmin = async (req, res) => {
     try {
@@ -114,4 +165,6 @@ module.exports = {
     updateadmin,
     deleteadmin,
     pauseadmin,
+    superadminlogin,
+    addsuperadmin
 };

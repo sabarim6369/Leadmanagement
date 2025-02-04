@@ -84,10 +84,10 @@ app.listen(8000, () => {
 //   try {
 //     const startTime = new Date(); 
 //     const call = await client.calls.create({
-//       url: ' https://90d5-43-250-42-50.ngrok-free.app/voice.xml', 
+//       url: 'https://a34e-43-250-42-50.ngrok-free.app/voice.xml', 
 //       to: leadPhoneNumber,
 //       from: telecallerPhoneNumber, 
-//       statusCallback: ' https://90d5-43-250-42-50.ngrok-free.app/call-status', 
+//       statusCallback: 'https://a34e-43-250-42-50.ngrok-free.app/call-status', 
 //       statusCallbackEvent: ['initiated', 'in-progress', 'completed', 'busy', 'failed']
 //     });
 

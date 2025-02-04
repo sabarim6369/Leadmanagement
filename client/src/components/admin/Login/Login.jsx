@@ -47,9 +47,19 @@ export default function LoginPage({ setUserRole }) {
             headers: { database: database }, 
           }
         );
-      } else if (role === "admin" || role === "superadmin") {
+      } 
+      else if (role === "admin") {
         response = await axios.post(
           "http://localhost:8000/api/admin/login", 
+          { email, password, role },
+          {
+            headers: { database: database }, 
+          }
+        );
+      }
+      else if (role === "superadmin") {
+        response = await axios.post(
+          "http://localhost:8000/api/superadmin/login", 
           { email, password, role },
           {
             headers: { database: database }, 
@@ -66,9 +76,17 @@ export default function LoginPage({ setUserRole }) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("admindetails", JSON.stringify(response.data.admindetails));
         setUserRole(role)
+        if(role==="superadmin"){
+          localStorage.setItem("superadmindetails", JSON.stringify(response.data.admindetails));
+          setTimeout(() => {
+            navigate("/admindashboard");
+          }, 2000);
+        }
+        else{
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
+      }
       } else {
         toast.error("Login failed. Please try again.");
       }
