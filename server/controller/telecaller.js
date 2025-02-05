@@ -45,7 +45,7 @@ const updateLeadResult = async (req, res) => {
     }
 };
 
-const getAssignedLeads = async (req, res) => {
+const  getAssignedLeads = async (req, res) => {
     try {
         const { telecallerId } = req.params;
 const Telecaller = req.db.model("Telecaller");

@@ -43,8 +43,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect / to /dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route
+  path="/"
+  element={
+    userRole === "superadmin" ? (
+      <Navigate to="/admindashboard" replace />
+    ) : (
+      <Navigate to="/dashboard" replace />
+    )
+  }
+/>
 
         <Route path="/login" element={<LoginPage setUserRole={setUserRole} />} />
 
