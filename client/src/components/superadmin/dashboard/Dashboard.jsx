@@ -90,7 +90,6 @@ export default function SuperAdminDashboard() {
       <div className="lg:w-[250px] w-0">
         <Sidebar />
       </div>
-
       <div className="flex-grow p-6 overflow-auto">
         <motion.div 
           initial="initial"

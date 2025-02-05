@@ -38,12 +38,12 @@ const Telecallers = () => {
         if (response.status === 200 && response.data.alltelecallers) {
           settelecallerdata(response.data.alltelecallers);
         } else {
-          settelecallerdata([]); // If response is not as expected, set empty
+          settelecallerdata([]); 
         }
       } catch (error) {
         setloading1(false);
         console.error("Error fetching telecallers:", error);
-        settelecallerdata([]); // Set empty on error
+        settelecallerdata([]);  
       }
     };
   
@@ -55,6 +55,7 @@ const Telecallers = () => {
   };
       const [type, settype] = useState("");
 
+      const[getuserdata,setgetuserdata]=useState();
   const add = async (data) => {
     console.log(data);
     setopentools(!opentools)
