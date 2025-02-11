@@ -41,7 +41,7 @@ const[telecallerid,settelecallerid]=useState("");
       const databaseName = tokenvalidation.databaseName;
       const userid=tokenvalidation.telecallerId;
       settelecallerid(userid);
-      const response = await axios.get(`http://localhost:8000/api/telecaller/leads/${userid}`, {
+      const response = await axios.get(`https://leadmanagement-1-8emu.onrender.com/api/telecaller/leads/${userid}`, {
         headers: { "database": databaseName }
       });
       
@@ -112,7 +112,7 @@ const[telecallerid,settelecallerid]=useState("");
   const assignleadwithtelecaller = async (telecallerid) => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/admin/assign-leads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/assign-leads",
         { telecallerId: telecallerid, leadId: selectedleadforassignment },
         { headers: { "database": databasename } }
       );
@@ -149,7 +149,7 @@ const opennotes=(lead)=>{
   const openassignleads = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/admin/assignallleads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/assignallleads",
         {},
         { headers: { "database": databasename } }
       );
@@ -169,7 +169,7 @@ const opennotes=(lead)=>{
   const handleFileImport = async (allImportedData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/admin/addleads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/addleads",
         { leadsData: allImportedData },
         { headers: { "database": databasename } }
       );

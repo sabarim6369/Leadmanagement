@@ -60,8 +60,8 @@ export default function SuperAdminDashboard() {
 
     try {
       const endpoint = type === "admin" 
-        ? "http://localhost:8000/api/superadmin/add"
-        : "http://localhost:8000/api/superadmin/addsuperadmin";
+        ? "https://leadmanagement-1-8emu.onrender.com/api/superadmin/add"
+        : "https://leadmanagement-1-8emu.onrender.com/api/superadmin/addsuperadmin";
 
       const payload = type === "admin" 
         ? { ...formData, superadminId: superadminid }

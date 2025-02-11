@@ -37,7 +37,7 @@ const Leads = () => {
       const tokenvalidation = decodeToken(token);
       const databaseName = tokenvalidation.databaseName;
       
-      const response = await axios.get("http://localhost:8000/api/admin/getallleads", {
+      const response = await axios.get("https://leadmanagement-1-8emu.onrender.com/api/admin/getallleads", {
         headers: { "database": databaseName }
       });
       console.log(response.data)
@@ -107,7 +107,7 @@ const Leads = () => {
   const assignleadwithtelecaller = async (telecallerid) => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/admin/assign-leads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/assign-leads",
         { telecallerId: telecallerid, leadId: selectedleadforassignment },
         { headers: { "database": databasename } }
       );
@@ -131,7 +131,7 @@ const Leads = () => {
     setselectedtleadforassignment(telecallerid);
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/admin/getalltelecaller",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/getalltelecaller",
         { headers: { "database": databasename } }
       );
       setavailabletelecallers(response.data.alltelecallers);
@@ -153,7 +153,7 @@ const Leads = () => {
   const openassignleads = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/admin/assignallleads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/assignallleads",
         {},
         { headers: { "database": databasename } }
       );
@@ -168,7 +168,7 @@ const Leads = () => {
   const swapleads=async()=>{
     try {
       const response = await axios.put(
-        "http://localhost:8000/api/admin/swapallleads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/swapallleads",
         {},
         { headers: { "database": databasename } }
       );
@@ -188,7 +188,7 @@ const Leads = () => {
   const handleFileImport = async (allImportedData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/admin/addleads",
+        "https://leadmanagement-1-8emu.onrender.com/api/admin/addleads",
         { leadsData: allImportedData },
         { headers: { "database": databasename } }
       );

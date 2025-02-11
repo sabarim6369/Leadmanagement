@@ -41,7 +41,7 @@ export default function LoginPage({ setUserRole }) {
       let response;
       if (role === "telecaller") {
         response = await axios.post(
-          "http://localhost:8000/api/telecaller/login", 
+          "https://leadmanagement-1-8emu.onrender.com/api/telecaller/login", 
           { email, password, role },
           {
             headers: { database: database }, 
@@ -50,7 +50,7 @@ export default function LoginPage({ setUserRole }) {
       } 
       else if (role === "admin") {
         response = await axios.post(
-          "http://localhost:8000/api/admin/login", 
+          "https://leadmanagement-1-8emu.onrender.com/api/admin/login", 
           { email, password, role },
           {
             headers: { database: database }, 
@@ -59,7 +59,7 @@ export default function LoginPage({ setUserRole }) {
       }
       else if (role === "superadmin") {
         response = await axios.post(
-          "http://localhost:8000/api/superadmin/login", 
+          "https://leadmanagement-1-8emu.onrender.com/api/superadmin/login", 
           { email, password, role },
           {
             headers: { database: database }, 

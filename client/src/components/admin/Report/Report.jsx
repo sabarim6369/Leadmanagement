@@ -18,7 +18,7 @@ const Report = () => {
       const databaseName = tokenValidation.databaseName;
       setDatabaseName(databaseName);
 
-      const response = await axios.get("http://localhost:8000/api/admin/getallleads", {
+      const response = await axios.get("https://leadmanagement-1-8emu.onrender.com/api/admin/getallleads", {
         headers: { "database": databaseName }
       });
       console.log(response.data.allleads);

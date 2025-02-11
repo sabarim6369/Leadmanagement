@@ -37,7 +37,7 @@ app.use('/api/admin', adminrouter);
 app.use('/api/telecaller', telecallerroute);
 
 app.listen(8000, () => {
-  console.log('Server running on http://localhost:8000');
+  console.log('Server running on https://leadmanagement-1-8emu.onrender.com');
 });
 
 
@@ -154,5 +154,5 @@ app.listen(8000, () => {
 // });
 
 // app.listen(8000, () => {
-//   console.log('Server running on http://localhost:8000');
+//   console.log('Server running on https://leadmanagement-1-8emu.onrender.com');
 // });

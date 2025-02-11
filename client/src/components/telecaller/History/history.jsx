@@ -22,7 +22,7 @@ useEffect(()=>{
           settelecallerid(userid);
 
     const gettelecallerhistory=async()=>{
-        const response=await axios.get(`http://localhost:8000/api/telecaller/history/${userid}`, {
+        const response=await axios.get(`https://leadmanagement-1-8emu.onrender.com/api/telecaller/history/${userid}`, {
             headers: { "database": databaseName }
           });
           sethistory(response.data.history)

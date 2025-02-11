@@ -27,7 +27,7 @@ const Addpopup = ({ popup, setispopupopen, type }) => {
      const adminId=tokenvalidation.adminId;
      const databaseName=tokenvalidation.databaseName;
      console.log(adminId,databaseName)
-      const response = await axios.post("http://localhost:8000/api/admin/add", formData,{
+      const response = await axios.post("https://leadmanagement-1-8emu.onrender.com/api/admin/add", formData,{
         headers:{
           "database":databaseName
         }
