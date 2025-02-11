@@ -72,12 +72,14 @@ const telecaller = await Telecaller.findById(telecallerId).populate({
 const getTelecallerHistory = async (req, res) => {
     try {
         const { telecallerId } = req.params;
+        console.log(telecallerId)
+        const Telecaller = req.db.model("Telecaller");
 
-        const telecaller = await req.db.Telecaller.findById(telecallerId).populate("history.leadId");
+        const telecaller = await Telecaller.findById(telecallerId).populate("history.leadId");
         if (!telecaller) {
             return res.status(404).json({ message: "Telecaller not found." });
         }
-
+console.log(telecaller.history)
         res.status(200).json({ history: telecaller.history });
     } catch (err) {
         console.error(err);
@@ -138,61 +140,69 @@ const addnotestotelecallerandlead = async (req, res) => {
     const { telecallerId, leadId, note, status, callbackTime } = req.body;
     const Telecaller = req.db.model("Telecaller");
     const Lead = req.db.model("Lead");
-  
+
     try {
-      const telecaller = await Telecaller.findById(telecallerId);
-      if (!telecaller) {
-        return res.status(404).json({ message: "Telecaller not found." });
-      }
-  
-      const newHistory = {
-        leadId,
-        action: "Added a note",
-        notes: note,
-      };
-  
-      telecaller.history.push(newHistory);
-      await telecaller.save();
-  
-      const lead = await Lead.findById(leadId);
-      if (!lead) {
-        return res.status(404).json({ message: "Lead not found." });
-      }
-  
-      let statusChangeNote = "";
-      if (status && lead.status !== status) {
-        statusChangeNote = `Status changed from '${lead.status}' to '${status}'.`;
-        lead.status = status;
-      }
-  
-      const newNote = {
-        note: statusChangeNote ? `${note} (${statusChangeNote})` : note,
-        telecallerId: telecallerId,
-      };
-  
-      lead.notes.push(newNote);
-  
-      // Check if callbackTime is provided and store it
-      if (callbackTime) {
-        lead.callbackTime = new Date(callbackTime);
-        lead.callbackScheduled = true; // Update the callbackScheduled flag to true
-      }
-  
-      await lead.save();
-  
-      res.status(200).json({
-        message: "Note added and status updated for both Telecaller and Lead.",
-        lead: lead,
-      });
+        const telecaller = await Telecaller.findById(telecallerId);
+        if (!telecaller) {
+            return res.status(404).json({ message: "Telecaller not found." });
+        }
+
+        const lead = await Lead.findById(leadId);
+        if (!lead) {
+            return res.status(404).json({ message: "Lead not found." });
+        }
+
+        let statusChangeNote = "";
+        if (status && lead.status !== status) {
+            statusChangeNote = `Status changed from '${lead.status}' to '${status}'.`;
+            lead.status = status;
+        }
+
+        // Add note to the lead
+        const newNote = {
+            note: statusChangeNote ? `${note} (${statusChangeNote})` : note,
+            telecallerId: telecallerId,
+        };
+
+        lead.notes.push(newNote);
+
+        // Add note to the telecaller history
+        const newHistory = {
+            leadId,
+            action: "Added a note",
+            notes: statusChangeNote ? `${note} (${statusChangeNote})` : note,
+        };
+
+        if (callbackTime) {
+            console.log("hello😎😎😎😎");
+            const lastNoteIndex = lead.notes.length - 1;
+            if (lastNoteIndex >= 0) {
+                lead.notes[lastNoteIndex].callbackTime = new Date(callbackTime);
+                lead.notes[lastNoteIndex].callbackScheduled = true;
+            }
+
+            // Also update callbackTime in telecaller history
+            newHistory.callbackTime = new Date(callbackTime);
+            newHistory.callbackScheduled = true;
+        }
+
+        telecaller.history.push(newHistory);
+        await telecaller.save();
+        await lead.save();
+
+        res.status(200).json({
+            message: "Note added and status updated for both Telecaller and Lead.",
+            lead: lead,
+        });
     } catch (error) {
-      console.error("Error while adding note and updating status:", error);
-      res.status(500).json({
-        message: "Error while adding note and updating status.",
-        error: error.message,
-      });
+        console.error("Error while adding note and updating status:", error);
+        res.status(500).json({
+            message: "Error while adding note and updating status.",
+            error: error.message,
+        });
     }
-  };
-  
+};
+
   
 
 module.exports = {

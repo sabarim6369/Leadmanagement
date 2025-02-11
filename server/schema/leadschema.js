@@ -55,15 +55,16 @@ const leadSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Telecaller",
       },
+      callbackTime: {
+        type: Date,
+      },
+      callbackScheduled: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
-  callbackTime: {
-    type: Date,
-  },
-  callbackScheduled: {
-    type: Boolean,
-    default: false,
-  },
+  
 });
 
 module.exports = leadSchema;

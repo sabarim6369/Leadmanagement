@@ -215,7 +215,7 @@ const opennotes=(lead)=>{
       <div className="flex-grow p-4 md:p-6 overflow-auto">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-3xl text-white">Leads</h1>
-          <div
+          {/* <div
             className="hidden sm:block text-white ml-auto mr-3 cursor-pointer"
             onClick={openmodel}
           >
@@ -227,14 +227,14 @@ const opennotes=(lead)=>{
           >
             <i className="fa fa-bars"></i>
           </div>
-          <div className="">
-            <Toolmodal
-              opentools={opentools}
-              add={add}
-              openImportPopup={openImportPopup}
-              openassignleads={openassignleads}
-            />
-          </div>
+            <div className="">
+              <Toolmodal
+                opentools={opentools}
+                add={add}
+                openImportPopup={openImportPopup}
+                openassignleads={openassignleads}
+              />
+            </div> */}
         </div>
 
       <Searchbar

@@ -5,7 +5,7 @@ const { getleadModel } = require('../config/db'); // assuming you already have a
 const moment = require('moment');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',  // Replace with your email service provider
+  service: 'gmail',  
   auth: {
     user: process.env.EMAIL_USER, // Your email address
     pass: process.env.EMAIL_PASS, // Your email password or app-specific password
@@ -26,10 +26,8 @@ const sendEmail = async (to, subject, text) => {
   }
 };
 
-// Cron job to check leads every minute
 cron.schedule('* * * * * ', async () => {
   try {
-    // Get the current time
     const now = moment();
 
     // Get the Lead model from the correct database

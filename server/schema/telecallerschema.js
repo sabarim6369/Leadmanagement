@@ -63,7 +63,14 @@ const telecallerschema = new mongoose.Schema({
             },
             notes: {
                 type: String
-            }
+            },
+            callbackTime: {
+                type: Date,
+              },
+              callbackScheduled: {
+                type: Boolean,
+                default: false,
+              },
         }
     ]
 });

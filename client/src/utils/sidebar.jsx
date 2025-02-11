@@ -146,10 +146,11 @@ const Sidebar = () => {
                             <i className={`fas fa-cogs fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===5?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===5?'font-bold text-black':'text-white'}`}>Settings</h2>
                         </div> */}
-                        <div onClick={()=>setselect(6)} className={`flex items-center cursor-pointer ${select===6?'bg-mint-green p-3 rounded':'text-white'}`}>
+                       {role==="telecaller" &&  <div onClick={()=>setselect(6)} className={`flex items-center cursor-pointer ${select===6?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-history fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===6?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===6?'font-bold text-black':'text-white'}`}>History</h2>
                         </div>
+}
                         <div onClick={signout} className={`flex items-center cursor-pointer ${select===7?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-sign-out-alt fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===7?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===7?'font-bold text-black':'text-white'}`}>Signout</h2>
