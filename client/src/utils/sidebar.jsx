@@ -125,19 +125,20 @@ const Sidebar = () => {
                             <i className={`fas fa-user-shield fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===9?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===9?'font-bold text-black':'text-white'}`}>Admins</h2>
                         </div>}
-                      {role!=="telecaller" &&  <div onClick={()=>setselect(2)} className={`flex items-center cursor-pointer ${select===2?'bg-mint-green p-3 rounded':'text-white'}`}>
+                      {role!=="telecaller" && role!=="superadmin" &&  <div onClick={()=>setselect(2)} className={`flex items-center cursor-pointer ${select===2?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-phone fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===2?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===2?'font-bold text-black':'text-white'}`}>Telecallers</h2>
                         </div>}
                      
-                        <div onClick={()=>setselect(8)} className={`flex items-center cursor-pointer ${select===8?'bg-mint-green p-3 rounded':'text-white'}`}>
+                        {role!=="superadmin" &&   <div onClick={()=>setselect(8)} className={`flex items-center cursor-pointer ${select===8?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-user-tie fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===8?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===8?'font-bold text-black':'text-white'}`}>Leads</h2>
-                        </div>
-                        <div onClick={()=>setselect(3)} className={`flex items-center cursor-pointer ${select===3?'bg-mint-green p-3 rounded':'text-white'}`}>
+                        </div>}
+                        {role!=="superadmin" &&<div onClick={()=>setselect(3)} className={`flex items-center cursor-pointer ${select===3?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-chart-line fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===3?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===3?'font-bold text-black':'text-white'}`}>Report</h2>
                         </div>
+                         }
                         {/* <div onClick={()=>setselect(4)} className={`flex items-center cursor-pointer ${select===4?'bg-mint-green p-3 rounded':'text-white'}`}>
                             <i className={`fas fa-comments fa-2x mr-4 text-gray-500 group-hover:text-blue-500 ${select===4?'text-black':'text-grey'}`}></i>
                             <h2 className={`text-white text-2xl  ${select===4?'font-bold text-black':'text-white'}`}>Messages</h2>

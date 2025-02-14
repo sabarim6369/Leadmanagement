@@ -29,7 +29,7 @@ const AdminProfile = () => {
         const token = localStorage.getItem("token");
         const tokenvalidation = decodeToken(token);
         const databasename = tokenvalidation.databaseName;
-        const response = await axios.get("https://leadmanagement-1-8emu.onrender.com/api/admin/getadmindetails", {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/admin/getadmindetails`, {
           headers: {
             "database": databasename
           }

@@ -21,7 +21,7 @@ const Notes = ({ setopennotespopup, leadfornotes, databasename, telecallerid }) 
   const saveNotes = async () => {
     try {
       const response = await axios.post(
-        "https://leadmanagement-1-8emu.onrender.com/api/telecaller/addnotes",
+`${process.env.REACT_APP_API_URL}/telecaller/addnotes`,
         {
           telecallerId: telecallerid,
           leadId: leadfornotes?._id,

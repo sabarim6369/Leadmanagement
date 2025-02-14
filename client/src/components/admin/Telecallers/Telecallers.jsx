@@ -29,7 +29,7 @@ const Telecallers = () => {
         const databaseName = tokenvalidation.databaseName;
   
         const response = await axios.get(
-          "https://leadmanagement-1-8emu.onrender.com/api/admin/getalltelecaller",
+        `${process.env.REACT_APP_API_URL}/admin/getalltelecaller`,
           { headers: { database: databaseName } }
         );
   

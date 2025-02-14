@@ -15,6 +15,7 @@ import SuperadminDashboard from "./components/superadmin/dashboard/Dashboard";
 import Admin from "./components/superadmin/admins/admin";
 import History from "./components/telecaller/History/history";
 import TelecallerProfile from "./components/telecaller/Profile/Profile";
+import SuperadminProfile from "./components/superadmin/profile/profile";
 import { jwtDecode } from "jwt-decode";
 
 const App = () => {
@@ -67,7 +68,19 @@ const App = () => {
             />
           }
         />
-        <Route path="/profile" element={<ProtectedRoute element={userRole==="admin"?<AdminProfile />:<TelecallerProfile/>} allowedRoles={["admin","telecaller"]} />} />
+<Route 
+  path="/profile" 
+  element={
+    <ProtectedRoute 
+      element={
+        userRole === "admin" ? <AdminProfile /> :
+        userRole === "superadmin" ? <SuperadminProfile /> :
+        <TelecallerProfile />
+      } 
+      allowedRoles={["admin", "superadmin", "telecaller"]} 
+    />
+  } 
+/>
         <Route path="/report" element={<ProtectedRoute element={<Report />} allowedRoles={["admin", "telecaller"]} />} />
         <Route path="/telecallers" element={<ProtectedRoute element={<Telecallers />} allowedRoles={["admin"]} />} />
         <Route
