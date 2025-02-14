@@ -3,7 +3,11 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const Admin = require('../schema/Adminschema'); 
 const jwt = require('jsonwebtoken');
-
+const getadmindetails=async(req,res)=>{
+    const Admin = req.db.model('Admin');
+    const admindetail=await Admin.find();
+    res.status(200).json({message:"data fetched successfully",admindata:admindetail});
+}
 const addadmin = async (req, res) => {
     try {
         console.log(req.body);
@@ -166,5 +170,6 @@ module.exports = {
     deleteadmin,
     pauseadmin,
     superadminlogin,
-    addsuperadmin
+    addsuperadmin,
+    getadmindetails
 };
