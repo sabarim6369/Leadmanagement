@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ToastContainer, toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-// import { RiAdminLine, RiShieldUserLine } from "react-icons/ri";
+import { RiAdminLine, RiShieldUserLine, RiCloseLine, RiUserAddLine } from "react-icons/ri";
 import Sidebar from "../../../utils/sidebar";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -125,14 +125,15 @@ export default function SuperAdminDashboard() {
               whileHover={{ scale: 1.02 }}
               className="p-6 rounded-xl bg-gradient-to-br from-purple-900/50 to-purple-800/30 border border-purple-700/50 shadow-xl"
             >
-              {/* <RiShieldUserLine className="w-12 h-12 text-purple-400 mb-4" /> */}
+              <RiShieldUserLine className="w-12 h-12 text-purple-400 mb-4" />
               <h3 className="text-xl font-semibold text-purple-300 mb-2">Super Administrators</h3>
               <p className="text-gray-400">Manage system-wide access and control</p>
               <button
                 onClick={() => setShowModal("superAdmin")}
                 className="mt-4 px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white font-medium transition-all flex items-center gap-2"
               >
-                 Add Super Admin
+                <RiUserAddLine />
+                Add Super Admin
               </button>
             </motion.div>
 
@@ -140,14 +141,15 @@ export default function SuperAdminDashboard() {
               whileHover={{ scale: 1.02 }}
               className="p-6 rounded-xl bg-gradient-to-br from-blue-900/50 to-blue-800/30 border border-blue-700/50 shadow-xl"
             >
-              {/* <RiAdminLine className="w-12 h-12 text-blue-400 mb-4" /> */}
+              <RiAdminLine className="w-12 h-12 text-blue-400 mb-4" />
               <h3 className="text-xl font-semibold text-blue-300 mb-2">Administrators</h3>
               <p className="text-gray-400">Manage department-level administrators</p>
               <button
                 onClick={() => setShowModal("admin")}
                 className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium transition-all flex items-center gap-2"
               >
-               Add Admin
+                <RiUserAddLine />
+                Add Admin
               </button>
             </motion.div>
           </motion.div>
@@ -172,7 +174,7 @@ export default function SuperAdminDashboard() {
                     onClick={() => setShowModal(null)}
                     className="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-full hover:bg-gray-700/50 transition-colors"
                   >
-                    {/* <FiX className="w-5 h-5" /> */}
+                    <RiCloseLine className="w-5 h-5" />
                   </button>
 
                   <h2 className="text-2xl font-bold text-center mb-6 text-white">
@@ -237,7 +239,7 @@ export default function SuperAdminDashboard() {
                         </>
                       ) : (
                         <>
-                          {/* <FiUserPlus /> */}
+                          <RiUserAddLine />
                           Add {showModal === "admin" ? "Administrator" : "Super Administrator"}
                         </>
                       )}

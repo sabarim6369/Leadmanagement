@@ -246,6 +246,7 @@ const opennotes=(lead)=>{
             telecallerdata={telecallerdata}
             viewmore={viewmore}
             opennotes={opennotes}
+            databasename={databasename}
           />
         </div>
 

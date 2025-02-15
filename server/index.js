@@ -10,12 +10,15 @@ const { getDatabaseConnection } = require('./config/db');
 const adminrouter = require('./routers/adminRoutes');
 const superadminrouter = require('./routers/superadminRoute');
 const telecallerroute = require('./routers/telecallerRoutes');
+const twilliorouter=require("./routers/twillio")
 // require("./cronjob/mail")
 const app = express();
+const fileUpload = require("express-fileupload");
 
 app.use(express.json());
 app.use(cors());
-
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
+app.use(fileUpload()); // Handle file uploads
 app.use((req, res, next) => {
   const { database } = req.headers; 
   if (!database) {
@@ -35,11 +38,12 @@ app.use((req, res, next) => {
 app.use('/api/superadmin', superadminrouter);
 app.use('/api/admin', adminrouter);
 app.use('/api/telecaller', telecallerroute);
+app.use("/api/twillio",twilliorouter);
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.listen(8000, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(8000,  () => {
+    console.log(`Server running on port 8000`);
 });
 
 
