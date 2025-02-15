@@ -35,7 +35,9 @@ app.use((req, res, next) => {
 app.use('/api/superadmin', superadminrouter);
 app.use('/api/admin', adminrouter);
 app.use('/api/telecaller', telecallerroute);
-
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+});
 app.listen(8000, () => {
   console.log('Server running on port 8000');
 });
