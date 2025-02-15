@@ -38,8 +38,8 @@ app.use('/api/telecaller', telecallerroute);
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
-app.listen(8000, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(8000,  () => {
+    console.log(`Server running on port 8000`);
 });
 
 
