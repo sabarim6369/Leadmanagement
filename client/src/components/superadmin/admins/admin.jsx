@@ -83,10 +83,8 @@ const Admin = () => {
     
     <div className="grid grid-cols-2 gap-3 mb-4">
       {[
-        { label: 'Telecallers', value: admin.telecallers.length || 5 },
-        { label: 'Total Leads', value: admin.leads || 100 },
-        { label: 'Active Leads', value: admin.activeLeads || 20 },
-        { label: 'Converted Leads', value: admin.convertedLeads || 10 }
+        { label: 'Telecallers', value: admin.telecallers || 5 },
+        { label: 'Total Leads', value: admin.leads || 0 },
       ].map((stat, index) => (
         <div key={index} className="bg-white/10 rounded-lg p-3 text-center">
           <p className="text-gray-400 text-sm">{stat.label}</p>

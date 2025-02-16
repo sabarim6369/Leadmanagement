@@ -3,12 +3,28 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const Admin = require('../schema/Adminschema'); 
 const jwt = require('jsonwebtoken');
-const getadmindetails=async(req,res)=>{
-    const Admin = req.db.model('Admin');
-    const admindetail=await Admin.find();
-    console.log(admindetail)
-    res.status(200).json({message:"data fetched successfully",admindata:admindetail});
-}
+    const getadmindetails = async (req, res) => {
+        try {
+            const Admin = req.db.model('Admin');
+            const admindetail = await Admin.find();
+
+            const formattedAdmins = admindetail.map((admin) => ({
+                _id: admin._id,
+                username: admin.username,
+                email: admin.email,
+                status: admin.status,
+                telecallers: admin.telecallers ? admin.telecallers.length : 0,
+                activetelecallers:0,
+                leads: admin.leads || 0 // Leads count
+            }));
+    console.log(formattedAdmins)
+            res.status(200).json({ message: "Data fetched successfully", admindata: formattedAdmins });
+        } catch (error) {
+            console.error("Error fetching admin details:", error);
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    };
+
 const getsuperadmindata = async (req, res) => {
     const { superadminId } = req.params;
     console.log(superadminId);
