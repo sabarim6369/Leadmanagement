@@ -140,7 +140,7 @@ const addnotestotelecallerandlead = async (req, res) => {
     const { telecallerId, leadId, note, status, callbackTime, answered } = req.body;
     const Telecaller = req.db.model("Telecaller");
     const Lead = req.db.model("Lead");
-
+    
     try {
         const telecaller = await Telecaller.findById(telecallerId);
         if (!telecaller) {
@@ -158,7 +158,6 @@ const addnotestotelecallerandlead = async (req, res) => {
             lead.status = status;
         }
 
-        // Add note to the lead
         const newNote = {
             note: statusChangeNote ? `${note} (${statusChangeNote})` : note,
             telecallerId: telecallerId,
@@ -166,7 +165,6 @@ const addnotestotelecallerandlead = async (req, res) => {
 
         lead.notes.push(newNote);
 
-        // Add note to the telecaller history
         const newHistory = {
             leadId,
             action: "Added a note",
@@ -174,27 +172,42 @@ const addnotestotelecallerandlead = async (req, res) => {
         };
 
         if (callbackTime) {
-            console.log("hello😎😎😎😎");
             const lastNoteIndex = lead.notes.length - 1;
             if (lastNoteIndex >= 0) {
                 lead.notes[lastNoteIndex].callbackTime = new Date(callbackTime);
                 lead.notes[lastNoteIndex].callbackScheduled = true;
             }
-
-            // Also update callbackTime in telecaller history
             newHistory.callbackTime = new Date(callbackTime);
             newHistory.callbackScheduled = true;
         }
-
         telecaller.history.push(newHistory);
-
-        // **Count Calls (Answered/Not Answered)**
         telecaller.totalcalls += 1;
         if (answered) {
             telecaller.answeredcalls += 1;
         } else {
             telecaller.notansweredcalls += 1;
         }
+        if (status === "fulfilled") {
+            telecaller.confirmed += 1;
+        }
+        const today = new Date().toISOString().split('T')[0];
+        let todayStats = telecaller.dailyStats.find(stat => stat.date === today);
+
+        if (!todayStats) {
+            todayStats = {
+                date: today,
+                totalcalls: 0,
+                answeredcalls: 0,
+                notansweredcalls: 0,
+                confirmed: 0
+            };
+            telecaller.dailyStats.push(todayStats);
+        }
+
+        todayStats.totalcalls += 1;
+        if (answered) todayStats.answeredcalls += 1;
+        else todayStats.notansweredcalls += 1;
+        if (status === "fulfilled") todayStats.confirmed += 1;
 
         await telecaller.save();
         await lead.save();
@@ -211,6 +224,7 @@ const addnotestotelecallerandlead = async (req, res) => {
         });
     }
 };
+
 
 
   

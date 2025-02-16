@@ -9,7 +9,7 @@ const telecallerschema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Admin', 
         required: true,
-      },
+    },
     password: {
         type: String,
         required: true
@@ -28,13 +28,13 @@ const telecallerschema = new mongoose.Schema({
         type: String,
         enum: ["active", "inactive"],
         required: true,
-        default:"active"
+        default: "active"
     },
-    number:{
-        type:Number
+    number: {
+        type: Number
     },
-    address:{
-        type:String
+    address: {
+        type: String
     },
     leads: [
         {
@@ -42,23 +42,52 @@ const telecallerschema = new mongoose.Schema({
             ref: "Lead"
         }
     ],
-    totalcalls:{
-        type:Number,
-        default:0
-    },
-    answeredcalls:{
-        type:Number,
-        default:0
-    },
-    notansweredcalls:{
-        type:Number,
-        default:0
-    },
 
-    pending: {   
+    /** OVERALL CALL STATS **/
+    totalcalls: {
         type: Number,
         default: 0
     },
+    answeredcalls: {
+        type: Number,
+        default: 0
+    },
+    notansweredcalls: {
+        type: Number,
+        default: 0
+    },
+    confirmed: {
+        type: Number,
+        default: 0
+    },
+
+    /** DAILY CALL STATS **/
+    dailyStats: [
+        {
+            date: {
+                type: String, // Store date as YYYY-MM-DD for easy lookup
+                required: true
+            },
+            totalcalls: {
+                type: Number,
+                default: 0
+            },
+            answeredcalls: {
+                type: Number,
+                default: 0
+            },
+            notansweredcalls: {
+                type: Number,
+                default: 0
+            },
+            confirmed: {
+                type: Number,
+                default: 0
+            }
+        }
+    ],
+
+    /** CALL HISTORY **/
     history: [
         {
             leadId: {
@@ -79,11 +108,11 @@ const telecallerschema = new mongoose.Schema({
             },
             callbackTime: {
                 type: Date,
-              },
-              callbackScheduled: {
+            },
+            callbackScheduled: {
                 type: Boolean,
                 default: false,
-              },
+            },
         }
     ]
 });
