@@ -45,7 +45,7 @@ const Leads = () => {
       return response.data.allleads;
     } catch (error) {
       console.error("Error fetching leads:", error);
-      toast.error("Failed to fetch latest leads");
+      // toast.error("Failed to fetch latest leads");
       return null;
     }
   }, []);
@@ -189,7 +189,7 @@ const Leads = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/admin/addleads`,
-        { leadsData: allImportedData },
+        { leadsData: allImportedData,adminid },
         { headers: { "database": databasename } }
       );
 

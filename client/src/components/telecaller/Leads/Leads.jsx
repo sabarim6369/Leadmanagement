@@ -50,7 +50,7 @@ const[telecallerid,settelecallerid]=useState("");
       return response.data.allleads;
     } catch (error) {
       console.error("Error fetching leads:", error);
-      toast.error("Failed to fetch latest leads");
+      // toast.error("Failed to fetch latest leads");
       return null;
     }
   }, []);

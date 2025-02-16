@@ -39,6 +39,8 @@ console.log(databaseName)
         const Lead = connection.model('Lead', leadSchema);
     } else {
         const Admin = connection.model('Admin', adminSchema);
+        const Lead = connection.model('Lead', leadSchema);
+
         const superadmin=connection.model("Superadmin",superadminSchema)
     }
 

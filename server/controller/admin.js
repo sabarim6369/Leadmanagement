@@ -350,42 +350,58 @@ const swapleads = async (req, res) => {
         res.status(500).json({ message: "Failed to redistribute leads.", error: error.message });
     }
 };
-
 const addleads = async (req, res) => {
     try {
-        console.log(req.body)
-        const leadsData = req.body.leadsData;
-        console.log(leadsData)
+        console.log(req.body);
+        const { leadsData, adminid } = req.body;
 
         if (!Array.isArray(leadsData) || leadsData.length === 0) {
-        // if(req.body){
-        
-        // }
             return res.status(400).json({ message: "No data provided or invalid format." });
         }
 
-        const leads = leadsData.map((lead) => {
-            return {
-                name: `${lead['First Name']} ${lead['Last Name']}`,
-                mobilenumber: lead.Id,
-                address: lead.Country || "",
-                gender: lead.Gender || "", 
-                country: lead.Country || "",
-                age: lead.Age || null,
-                date: lead.Date || "",
-                id: lead.Id || null,
-            };
-        });
-        console.log("fvfj")
+        const leads = leadsData.map((lead) => ({
+            name: `${lead['First Name']} ${lead['Last Name']}`,
+            mobilenumber: lead.Id,
+            address: lead.Country || "",
+            gender: lead.Gender || "",
+            country: lead.Country || "",
+            age: lead.Age || null,
+            date: lead.Date || "",
+            id: lead.Id || null,
+        }));
+
+        console.log("Processing leads...");
 
         const Leads = req.db.model("Lead");
         const result = await Leads.insertMany(leads);
-        res.status(201).json({ message: "Leads uploaded successfully", data: result });
+
+        console.log("Leads inserted successfully:", result.length);
+
+        const superAdminDbURI = process.env.MONGODB_SUPERADMINURI;
+        const superAdminConnection = await mongoose.createConnection(superAdminDbURI).asPromise();
+        console.log("Connected successfully to SuperAdmin DB");
+
+        const AdminModel = superAdminConnection.model("Admin", require("../schema/Adminschema"));
+
+        const updatedAdmin = await AdminModel.updateOne(
+            { _id: adminid },
+            { $inc: { leads: result.length } }
+        );
+
+        console.log("Updated Admin leads count:", updatedAdmin);
+
+        res.status(201).json({
+            message: "Leads uploaded successfully",
+            totalLeadsInserted: result.length,
+            adminUpdateStatus: updatedAdmin
+        });
+
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Error uploading leads", error: err });
+        console.error("Error uploading leads:", err);
+        res.status(500).json({ message: "Error uploading leads", error: err.message });
     }
 };
+
 const assignallleads = async (req, res) => {
     console.log("Before fetching unassigned leads");
 

@@ -6,8 +6,47 @@ const jwt = require('jsonwebtoken');
 const getadmindetails=async(req,res)=>{
     const Admin = req.db.model('Admin');
     const admindetail=await Admin.find();
+    console.log(admindetail)
     res.status(200).json({message:"data fetched successfully",admindata:admindetail});
 }
+const getsuperadmindata = async (req, res) => {
+    const { superadminId } = req.params;
+    console.log(superadminId);
+
+    try {
+        const superadmin = req.db.model('Superadmin');
+        const admin = req.db.model("Admin");
+
+        const superadmindata = await superadmin.findById(superadminId);
+        const admindata = await admin.find();
+
+        console.log("Total Admin Records:", admindata.length);
+
+        let totalTelecallers = 0;
+        let totalleads=0;
+        admindata.forEach((adminRecord) => {
+            const telecallerCount = adminRecord.telecallers ? adminRecord.telecallers.length : 0;
+            totalTelecallers += telecallerCount;
+            totalleads+=adminRecord.leads
+            console.log("Admin ID:", adminRecord._id, "Telecallers Count:", telecallerCount);
+        });
+
+        console.log("Total Telecallers:", totalTelecallers,totalleads);
+
+        res.status(200).json({
+            message: "Data fetched successfully",
+            superadmindata: superadmindata,
+            admindata: admindata,
+            totalTelecallers: totalTelecallers,
+            totalleads:totalleads
+        });
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
+
 const addadmin = async (req, res) => {
     try {
         console.log(req.body);
@@ -171,5 +210,6 @@ module.exports = {
     pauseadmin,
     superadminlogin,
     addsuperadmin,
-    getadmindetails
+    getadmindetails,
+    getsuperadmindata
 };
