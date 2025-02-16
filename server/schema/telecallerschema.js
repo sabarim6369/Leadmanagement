@@ -42,6 +42,19 @@ const telecallerschema = new mongoose.Schema({
             ref: "Lead"
         }
     ],
+    totalcalls:{
+        type:Number,
+        default:0
+    },
+    answeredcalls:{
+        type:Number,
+        default:0
+    },
+    notansweredcalls:{
+        type:Number,
+        default:0
+    },
+
     pending: {   
         type: Number,
         default: 0

@@ -137,7 +137,7 @@ const login = async (req, res) => {
 };
 const addnotestotelecallerandlead = async (req, res) => {
     console.log(req.body);
-    const { telecallerId, leadId, note, status, callbackTime } = req.body;
+    const { telecallerId, leadId, note, status, callbackTime, answered } = req.body;
     const Telecaller = req.db.model("Telecaller");
     const Lead = req.db.model("Lead");
 
@@ -187,11 +187,20 @@ const addnotestotelecallerandlead = async (req, res) => {
         }
 
         telecaller.history.push(newHistory);
+
+        // **Count Calls (Answered/Not Answered)**
+        telecaller.totalcalls += 1;
+        if (answered) {
+            telecaller.answeredcalls += 1;
+        } else {
+            telecaller.notansweredcalls += 1;
+        }
+
         await telecaller.save();
         await lead.save();
 
         res.status(200).json({
-            message: "Note added and status updated for both Telecaller and Lead.",
+            message: "Note added, status updated, and call counted.",
             lead: lead,
         });
     } catch (error) {
@@ -202,6 +211,7 @@ const addnotestotelecallerandlead = async (req, res) => {
         });
     }
 };
+
 
   
 
