@@ -10,7 +10,8 @@ const {
   getalltelecaller,
   getallleads,
   assignallleads,
-  getadmindetails
+  getadmindetails,
+  getstats
 } = require("../controller/admin");
 
 const router = express.Router();
@@ -26,4 +27,5 @@ router.put("/swapallleads", (req, res) => swapleads(req, res, req.db));
 router.post("/addleads", (req, res) => addleads(req, res, req.db));
 router.put("/assignallleads",(req,res)=>assignallleads(req,res,req.db));
 router.get("/getadmindetails",(req,res)=>getadmindetails(req,res,req.db));
+router.get("/getstats",(req,res)=>getstats(req,res,req.db));
 module.exports = router;

@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const Todayscalls = () => {
+const Todayscalls = ({telecallerdata,dailystats}) => {
+  useEffect(()=>{
+    console.log("👏😍😍😍😍",telecallerdata)
+  },[telecallerdata])
+ 
   return (
  <div className="lg:w-[70%] bg-gray-700 pt-5 mt-5 rounded-2xl p-4 md:p-8">
             <h3 className="text-white text-xl font-bold">Today's Calls</h3>
@@ -33,7 +37,7 @@ const Todayscalls = () => {
                   </svg>
                 </div>
                 <div className="ml-6 mt-7 space-y-2">
-                  <div className="text-white font-bold text-2xl">500</div>
+                  <div className="text-white font-bold text-2xl">{dailystats.totalcalls||0}</div>
                   <div className="text-white font-bold">Total calls</div>
                   <div className="text-yellow-600">+10% from yesterday</div>
                 </div>
@@ -54,7 +58,7 @@ const Todayscalls = () => {
                   </svg>
                 </div>
                 <div className="ml-6 mt-7 space-y-2">
-                  <div className="text-white font-bold  text-2xl">400</div>
+                  <div className="text-white font-bold  text-2xl">{dailystats.answeredcalls||0}</div>
                   <div className="text-white font-bold">Answered</div>
                   <div className="text-blue-200 ">+8% from yesterday</div>
                 </div>
@@ -75,8 +79,8 @@ const Todayscalls = () => {
                   </svg>
                 </div>
                 <div className="ml-6 mt-7 space-y-2">
-                  <div className="text-white font-bold  text-2xl">50</div>
-                  <div className="text-white font-bold">Rejected</div>
+                  <div className="text-white font-bold  text-2xl">{dailystats.notansweredcalls||0}</div>
+                  <div className="text-white font-bold">Not answered</div>
                   <div className="text-rose-200 ">+2% from yesterday</div>
                 </div>
               </div>
@@ -113,7 +117,7 @@ const Todayscalls = () => {
                   </svg>
                 </div>
                 <div className="ml-6 mt-7 space-y-2">
-                  <div className="text-white font-bold  text-2xl">50</div>
+                  <div className="text-white font-bold  text-2xl">{dailystats.confirmed||0}</div>
                   <div className="text-white font-bold">Confirmed</div>
                   <div className="text-blue-600 ">+3% from yesterday</div>
                 </div>

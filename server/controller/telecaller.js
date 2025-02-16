@@ -72,6 +72,7 @@ const telecaller = await Telecaller.findById(telecallerId).populate({
 const getTelecallerHistory = async (req, res) => {
     try {
         const { telecallerId } = req.params;
+        const today = new Date().toISOString().split("T")[0];
         console.log(telecallerId)
         const Telecaller = req.db.model("Telecaller");
 
@@ -79,8 +80,11 @@ const getTelecallerHistory = async (req, res) => {
         if (!telecaller) {
             return res.status(404).json({ message: "Telecaller not found." });
         }
-console.log(telecaller.history)
-        res.status(200).json({ history: telecaller.history });
+        const dailyStats = telecaller.dailyStats.find(stat => stat.date === today);
+        console.log("Today's Daily Stats:", dailyStats);
+
+        // console.log(telecaller)
+        res.status(200).json({ history: telecaller.history,telecallerdetails:telecaller, dailyStats: dailyStats || {} });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Error fetching telecaller history.", error: err });

@@ -8,11 +8,64 @@ import Callinsights from './Callinsights';
 import { useState,useEffect } from 'react';
 import Addpopup from './popups/addpopup';
 import Toolmodal from './popups/Toolmodal';
+import { jwtDecode } from "jwt-decode";
+
 import axios from 'axios'
 const Dashboard = () => {
   const [opentools, setopentools] = useState(false);
   const [popup, setispopupopen] = useState(false);
   const [type, settype] = useState("");
+  const [adminid, setadminid] = useState("");
+    const [databaseName, setDatabaseName] = useState("");
+    const[admindata,setadmindata]=useState(null);
+    const[dailystats,setdailystats]=useState(null);
+    const [stats, setStats] = useState({
+      totalCalls: 0,
+      answeredCalls: 0,
+      notAnsweredCalls: 0,
+      confirmed: 0,
+      topTelecallers:[]
+    });
+      useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const tokenvalidation = jwtDecode(token);
+          console.log("Decoded Token:", tokenvalidation);
+  
+          setDatabaseName(tokenvalidation.databaseName);
+          setadminid(tokenvalidation.adminId);
+          
+        }
+      }, []);
+  
+
+      useEffect(() => {
+        if (adminid && databaseName) {
+          const getalldata = async () => {
+            try {
+              const response = await axios.get(
+                `${process.env.REACT_APP_API_URL}/admin/getstats`,
+                {
+                  headers: { "database": databaseName }
+                }
+              );
+              setStats(response.data);
+              console.log(response.data.topTelecallers)
+             
+            } catch (error) {
+              console.error("API Error:", error);
+            }
+          };
+          getalldata();
+        }
+      }, [adminid, databaseName]);
+      if (!stats) {
+        return   <div className="flex h-screen bg-gray-900">
+        <div className="lg:w-[250px] w-0">
+          <Sidebar />
+        </div><div className="text-white">Loading...</div>
+        </div>;
+      }
   const add = async(data) => {
     console.log(data);
     setopentools(!opentools)
@@ -53,10 +106,14 @@ const Dashboard = () => {
        opentools={opentools}
        add={add}
        />
-        <Callssummary />
+        <Callssummary
+        stats={stats}
+        />
 
         <div className="flex flex-col lg:flex-row w-full mt-4 gap-4">
-          <Toptelecallers />
+          <Toptelecallers 
+          stats={stats}
+          />
           <Fulfilment />
         </div>
 

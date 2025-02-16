@@ -489,12 +489,76 @@ const assignallleads = async (req, res) => {
         res.status(500).json({ message: "Failed to assign leads.", error: error.message });
     }
 };
+const getstats = async (req, res) => {
+    console.log("👏👏👏👏👏😍😍😍");
+    try {
+        const today = new Date().toISOString().split("T")[0];
+        const Telecaller = req.db.model("Telecaller");
+
+        const telecallers = await Telecaller.find().populate("history.leadId");
+
+        if (!telecallers || telecallers.length === 0) {
+            return res.status(404).json({ message: "No telecallers found." });
+        }
+
+        let totalCalls = 0;
+        let answeredCalls = 0;
+        let notAnsweredCalls = 0;
+        let confirmed = 0;
+
+        let telecallerStats = [];
+
+        telecallers.forEach(telecaller => {
+            let todayStats = { totalcalls: 0, answeredcalls: 0, notansweredcalls: 0, confirmed: 0 };
+
+            if (telecaller.dailyStats && telecaller.dailyStats.length > 0) {
+                const foundStats = telecaller.dailyStats.find(stat => stat.date === today);
+                if (foundStats) {
+                    todayStats = foundStats;
+                }
+            }
+
+            totalCalls += todayStats.totalcalls || 0;
+            answeredCalls += todayStats.answeredcalls || 0;
+            notAnsweredCalls += todayStats.notansweredcalls || 0;
+            confirmed += todayStats.confirmed || 0;
+
+            telecallerStats.push({
+                id: telecaller._id,
+                username: telecaller.username,
+                email: telecaller.email,
+                totalCalls: todayStats.totalcalls || 0,
+                confirmedCalls: todayStats.confirmed || 0
+            });
+        });
+
+        // Sort by total calls, then by confirmed calls
+        telecallerStats.sort((a, b) => b.totalCalls - a.totalCalls || b.confirmedCalls - a.confirmedCalls);
+
+        // Get top 10 telecallers
+        const topTelecallers = telecallerStats.slice(0, 10);
+
+        console.log("Today's Total Stats:", { totalCalls, answeredCalls, notAnsweredCalls, confirmed });
+console.log(topTelecallers)
+        res.status(200).json({ 
+            totalCalls, 
+            answeredCalls, 
+            notAnsweredCalls, 
+            confirmed,
+            topTelecallers
+        });
+
+    } catch (err) {
+        console.error("Error fetching telecaller history:", err);
+        res.status(500).json({ message: "Error fetching telecaller history.", error: err });
+    }
+};
 
 
 
 
 
-module.exports = assignallleads;
+
 
 module.exports = {
     addtelecaller,
@@ -507,5 +571,6 @@ module.exports = {
     getalltelecaller,
     getallleads,
     assignallleads,
-    getadmindetails
+    getadmindetails,
+    getstats
 };
