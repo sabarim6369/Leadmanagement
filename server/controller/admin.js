@@ -121,7 +121,6 @@ return res.status(200).json({message:"leads fetched successfully",allleads})
 
 }
 
-
 const addtelecaller = async (req, res) => {
     try {
         const { email, password, username, number, address, adminId } = req.body;
@@ -132,47 +131,60 @@ const addtelecaller = async (req, res) => {
 
         const Telecaller = req.db.model("Telecaller");
 
+        // Check if the telecaller already exists
         const existingTelecaller = await Telecaller.findOne({ email });
         if (existingTelecaller) {
             return res.status(402).json({ message: "Telecaller with this email already exists." });
         }
 
+        // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
+        // Create new telecaller
         const newTelecaller = new Telecaller({
-          email,
-          password: hashedPassword,
-          username,
-          number,
-          address,
-          admin: adminId,
-          leads: [],
-          history: [],
+            email,
+            password: hashedPassword,
+            username,
+            number,
+            address,
+            admin: adminId,
+            leads: [],
+            history: [],
         });
 
-        await newTelecaller.save(); 
+        await newTelecaller.save();
 
-     
+        console.log("✅ Telecaller added successfully.");
 
+        // ✅ Create a separate connection for the SuperAdmin DB
         const superAdminDbURI = process.env.MONGODB_SUPERADMINURI;
-        const superAdminConnection = mongoose.connect(superAdminDbURI).then("connected successfully to superadmin db").catch((err)=>{console.log("err",err)});
 
-        const AdminModel = mongoose.model("Admin", require("../schema/Adminschema"));
+        const superAdminConnection = await mongoose.createConnection(superAdminDbURI);
 
-        await AdminModel.findByIdAndUpdate(
+        console.log("✅ Connected successfully to SuperAdmin DB.");
+
+       const AdminModel = superAdminConnection.model("Admin", require("../schema/Adminschema"));
+
+        const updatedAdmin = await AdminModel.findByIdAndUpdate(
             adminId,
-            { $addToSet: { telecallers: { email } } }, 
+            { $addToSet: { telecallers: { email } } },
             { new: true }
         );
 
+        if (!updatedAdmin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
 
-        res.status(200).json({ message: "Telecaller added successfully and mapped to admin", data: newTelecaller });
+        console.log("✅ Telecaller mapped to Admin successfully.");
+
+        res.status(200).json({ message: "Telecaller added and mapped successfully.", data: newTelecaller });
 
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Error adding telecaller", error: err });
+        console.error("❌ Error adding telecaller:", err);
+        res.status(500).json({ message: "Error adding telecaller", error: err.message });
     }
 };
+
 
 
 
